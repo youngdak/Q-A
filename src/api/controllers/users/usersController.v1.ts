@@ -17,6 +17,7 @@ import { GetUserByIdQuery } from "../../../application/users/queries/getUserById
 import { UpdateUserCommand } from "../../../application/users/commands/updateUserCommand";
 import { DeleteUserCommand } from "../../../application/users/commands/deleteUserCommand";
 import { GetUserByEmailQuery } from "../../../application/users/queries/getUserByEmail";
+import { GetAllUsersQuery } from "../../../application/users/queries/getAllUsers";
 
 @controller("/users")
 export default class UsersController extends BaseController {
@@ -26,6 +27,12 @@ export default class UsersController extends BaseController {
 	) {
 		super();
 		this._userServiceLocator = userServiceLocator;
+	}
+
+	@httpGet("/")
+	public async getAllUsers(@response() res: Response): Promise<Response<any>> {
+		const result = await this._userServiceLocator.getAllUsersQueryHanlder().Handle(new GetAllUsersQuery());
+		return this.result(res, result);
 	}
 
 	@httpGet("/profile")
