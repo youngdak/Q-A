@@ -1,7 +1,5 @@
 import {
 	EntityRepository,
-	Repository,
-	AbstractRepository,
 	EntityManager,
 } from "typeorm";
 import UserMap from "./user.map";

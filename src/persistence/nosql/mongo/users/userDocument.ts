@@ -1,10 +1,10 @@
 import User, { IUser } from "../../../../domain/users/user";
-import mongoose from "../mongo.db";
 import BaseMap from "../baseMap";
 import UserId from "../../../../domain/users/userId";
 import { injectable } from "inversify";
 import UserToken, { IUserToken } from "../../../../domain/users/userToken";
 import UserTag, { IUserTag } from "../../../../domain/users/userTag";
+import { mongoose } from "../mongoDatabaseSetup";
 
 export default interface UserDocument extends IUser, mongoose.Document {
 	tokens: IUserToken[];

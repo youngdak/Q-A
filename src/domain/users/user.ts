@@ -16,6 +16,7 @@ export interface IUser {
 }
 
 export default class User extends EntityBase<UserId> implements IUser {
+    public static readonly EntityName = "User";
     private _firstName: string;
     private _lastName: string;
     private _otherName: string;

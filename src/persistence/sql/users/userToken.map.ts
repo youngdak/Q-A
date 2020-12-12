@@ -11,7 +11,7 @@ export default class UserTokenMap implements IUserToken {
 	@Column()
 	token: string;
 
-	@Column({ unique: true })
+	@Column()
 	device: string;
 
 	@Column()

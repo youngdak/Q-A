@@ -28,22 +28,14 @@ export default class UserRepository implements IUserRepository {
 		});
 	}
 
-	public async getById(id: UserId): Promise<User> {
+	public async getById(id: UserId): Promise<User | undefined> {
 		const userDocument = await this.userMap.model.findOne({ _id: id.Id });
-		return new Promise<User>((resolve, _) => {
-			userDocument != undefined
-				? resolve(UserMap.user(userDocument))
-				: resolve(undefined);
-		});
+		return userDocument != undefined ? UserMap.user(userDocument) : undefined;
 	}
 
-	public async getByEmail(email: string): Promise<User> {
+	public async getByEmail(email: string): Promise<User | undefined> {
 		const userDocument = await this.userMap.model.findOne({ email: email });
-		return new Promise<User>((resolve, _) => {
-			userDocument != undefined
-				? resolve(UserMap.user(userDocument))
-				: resolve(undefined);
-		});
+		return userDocument != undefined ? UserMap.user(userDocument) : undefined;
 	}
 
 	public async save(user: User): Promise<string | number> {

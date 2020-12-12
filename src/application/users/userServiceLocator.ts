@@ -1,7 +1,6 @@
 import IUserRepository from "./interfaces/userRepository";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../common/types";
-import { CreateUserCommandHandler } from "./commands/createUserCommand";
 import { GetAllUsersQueryHandler } from "./queries/getAllUsers";
 import IUserQuery from "./interfaces/userQuery";
 import { GetUserByIdQueryHandler } from "./queries/getUserById";
@@ -19,10 +18,6 @@ export default class UserServiceLocator {
 	) {
 		this._userRepository = userRepository;
 		this._userQuery = userQuery;
-	}
-
-	public createUserCommandHanlder(): CreateUserCommandHandler {
-		return new CreateUserCommandHandler(this._userRepository);
 	}
 
 	public updateUserCommandHanlder(): UpdateUserCommandHandler {
