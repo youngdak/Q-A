@@ -17,3 +17,7 @@ script:
 
 after_script:
   - docker-compose -f integration-test.docker-compose.yml down -v
+
+after_success:
+  - npm run coverage
+  - npm run coveralls

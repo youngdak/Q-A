@@ -5,12 +5,11 @@
 	"main": "index.js",
 	"scripts": {
 		"typeorm": "set NODE_ENV=development && ts-node ./node_modules/typeorm/cli -f ./src/ormconfig.ts",
-		"dev": "set NODE_ENV=development && ts-node-dev --respawn src/app.ts",
-		"prod": "set NODE_ENV=production && ts-node-dev --respawn src/app.ts",
+		"dev": "NODE_ENV=development && ts-node-dev --respawn src/app.ts",
 		"unit-test": "mocha --require ts-node/register ./test/unit.test/*.*",
 		"integration-test": "mocha --require ts-node/register ./test/integration.test/**/*.* --timeout 10000",
-		"coverage": "nyc --reporter=lcov --reporter=text-summary -x dist/test/unit.test/*.* npm run test",
-		"build": "tsc"
+		"coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+		"coverage": "nyc --reporter=lcov --reporter=text-summary -x dist/test/unit.test/*.* npm run unit-test"
 	},
 	"repository": {
 		"type": "git",
@@ -73,6 +72,7 @@
 		"uuidv4": "^6.2.5"
 	},
 	"devDependencies": {
+		"coveralls": "^3.1.0",
 		"nyc": "^15.1.0",
 		"ts-node": "^9.0.0",
 		"ts-node-dev": "^1.0.0",
