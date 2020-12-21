@@ -22,6 +22,9 @@ lib-cov
 coverage
 *.lcov
 
+# type coverage directory for typescript
+coverage-ts
+
 # nyc test coverage
 .nyc_output
 
