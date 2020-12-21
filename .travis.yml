@@ -13,6 +13,7 @@ before_script:
   - docker-compose -f integration-test.docker-compose.yml up -d --build
 
 script:
+  - npm run unit-test
   - npm run integration-test
 
 after_script:
