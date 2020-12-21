@@ -6,10 +6,14 @@
 	"scripts": {
 		"typeorm": "set NODE_ENV=development && ts-node ./node_modules/typeorm/cli -f ./src/ormconfig.ts",
 		"dev": "NODE_ENV=development && ts-node-dev --respawn src/app.ts",
-		"unit-test": "mocha --require ts-node/register ./test/unit.test/*.*",
-		"integration-test": "mocha --require ts-node/register ./test/integration.test/**/*.* --timeout 10000",
+		"unit:test": "mocha --require ts-node/register ./test/unit.test/*.*",
+		"integration:test": "mocha --require ts-node/register ./test/integration.test/**/*.* --timeout 10000",
 		"coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
-		"coverage": "nyc --reporter=lcov --reporter=text-summary -x dist/test/unit.test/*.* npm run unit-test",
+		"cover:unit": "nyc --silent npm run unit:test",
+		"cover:integration": "nyc --silent --no-clean npm run integration:test",
+		"cover:report": "nyc report --reporter=lcov --reporter=text",
+		"coverage": "npm run cover:unit && npm run cover:integration && npm run cover:report",
+		"coverage1": "nyc --reporter=lcov --reporter=text npm run unit:test",
 		"type-coverage": "./node_modules/type-coverage/bin/type-coverage",
 		"ts-coverage": "typescript-coverage-report"
 	},
