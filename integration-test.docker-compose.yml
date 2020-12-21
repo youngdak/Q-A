@@ -1,0 +1,22 @@
+version: "3.1"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_test
+    ports:
+      - 5430:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres_test
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo_test
+    ports:
+      - 27010:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=mongo_test
+    volumes:
+      - ./data/mongodb:/data/db

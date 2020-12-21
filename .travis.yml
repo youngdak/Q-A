@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - "node"
+
+env:
+  - NODE_ENV=test_postgres
+  - NODE_ENV=test_mongo
+
+services:
+  - docker
+
+before_script:
+  - docker-compose -f integration-test.docker-compose.yml up -d --build
+
+script:
+  - npm run integration-test
+
+after_script:
+  - docker-compose -f integration-test.docker-compose.yml down -v

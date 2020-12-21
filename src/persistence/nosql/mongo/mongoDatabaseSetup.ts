@@ -16,8 +16,9 @@ export default class MongoDatabaseSetup implements IDatabase {
 	}
 
 	private async configuration(): Promise<typeof mongoose> {
+		const conn_string = `mongodb://${EnvironmentVariable.DATABASE_USER}:${EnvironmentVariable.DATABASE_PASSWORD}@${EnvironmentVariable.DATABASE_HOST}:${EnvironmentVariable.DATABASE_PORT}/${EnvironmentVariable.DATABASE_NAME}?authSource=admin`;
 		const conn = await mongoose.connect(
-			`mongodb://${EnvironmentVariable.DATABASE_HOST}:${EnvironmentVariable.DATABASE_PORT}/${EnvironmentVariable.DATABASE_NAME}`,
+			conn_string,
 			{
 				useNewUrlParser: true,
 				useUnifiedTopology: true,
