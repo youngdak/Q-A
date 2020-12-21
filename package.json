@@ -13,7 +13,6 @@
 		"cover:integration": "nyc --silent --no-clean npm run integration:test",
 		"cover:report": "nyc report --reporter=lcov --reporter=text",
 		"coverage": "npm run cover:unit && npm run cover:integration && npm run cover:report",
-		"coverage1": "nyc --reporter=lcov --reporter=text npm run unit:test",
 		"type-coverage": "./node_modules/type-coverage/bin/type-coverage",
 		"ts-coverage": "typescript-coverage-report"
 	},

@@ -69,7 +69,7 @@ describe("user domain", () => {
 			"diepreye.dakolo@gmail.com",
 			""
 		);
-		user.failure.should.be.false;
+		user.failure.should.be.true;
 		user.error.should.be.eq("password should not be null or empty");
 	});
 
