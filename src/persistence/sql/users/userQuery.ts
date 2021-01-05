@@ -1,12 +1,9 @@
-import {
-	EntityRepository,
-	EntityManager,
-} from "typeorm";
-import UserMap from "./user.map";
-import IUserQuery from "../../../application/users/interfaces/userQuery";
-import UserId from "../../../domain/users/userId";
+import { EntityRepository, EntityManager } from "typeorm";
+import UserMap from "@src/persistence/sql/users/user.map";
+import IUserQuery from "@src/application/users/interfaces/userQuery";
+import UserId from "@src/domain/users/userId";
 import { injectable } from "inversify";
-import UserDto from "../../../application/users/queries/userDto";
+import UserDto from "@src/application/users/queries/userDto";
 
 @EntityRepository()
 @injectable()

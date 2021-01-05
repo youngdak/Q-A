@@ -1,10 +1,9 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../common/types";
-import IUserRepository from "../users/interfaces/userRepository";
-import { LoginCommandHandler } from "./commands/loginCommand";
-import { RegisterCommandHandler } from "./commands/registerCommand";
-import { LogoutCommandHandler } from "./commands/logoutCommand";
-import { LogoutAllCommandHandler } from "./commands/logoutAllCommand";
+import IUserRepository from "@src/application/users/interfaces/userRepository";
+import { LoginCommandHandler } from "@src/application/auth/commands/loginCommand";
+import { RegisterCommandHandler } from "@src/application/auth/commands/registerCommand";
+import { LogoutCommandHandler } from "@src/application/auth/commands/logoutCommand";
+import { TYPES } from "@src/application/common/types";
 
 @injectable()
 export default class AuthServiceLocator {
@@ -23,9 +22,5 @@ export default class AuthServiceLocator {
 
 	public logoutCommandHanlder(): LogoutCommandHandler {
 		return new LogoutCommandHandler(this._userRepository);
-	}
-
-	public logoutAllCommandHanlder(): LogoutAllCommandHandler {
-		return new LogoutAllCommandHandler(this._userRepository);
 	}
 }

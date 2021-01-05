@@ -1,4 +1,4 @@
-import StringIdentity from "../entitybase/stringIdentity";
+import StringIdentity from "@src/domain/entitybase/stringIdentity";
 
 export default class UserId extends StringIdentity {
     private constructor() {

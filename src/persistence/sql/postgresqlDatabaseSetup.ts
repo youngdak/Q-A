@@ -1,7 +1,7 @@
+import EnvironmentVariable from "@src/environmentVariable";
 import { Container } from "inversify";
 import { ConnectionOptions } from "typeorm";
-import EnvironmentVariable from "../../environmenVariable";
-import SqlDatabaseSetup from "./sqlDatabaseSetup";
+import SqlDatabaseSetup from "@src/persistence/sql/sqlDatabaseSetup";
 
 export default class PostgreSqlDatabaseSetup extends SqlDatabaseSetup {
 	constructor() {

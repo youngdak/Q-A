@@ -1,10 +1,11 @@
+import "module-alias/register";
 import request, { SuperTest } from "supertest";
-import Startup from "../../../src/startup";
+import Startup from "@src/startup";
 import http from "http";
 import { Container } from "inversify";
-import User from "../../../src/domain/users/user";
-import UserFake from "../user/userFake";
-import IFake from "./fake";
+import User from "@src/domain/users/user";
+import UserFake from "@test/integration.test/user/userFake";
+import IFake from "@test/integration.test/configuration/fake";
 
 export default class TestServer {
 	private server: http.Server;
@@ -49,7 +50,7 @@ export default class TestServer {
 		};
 
 		const response = await this.api.post("/api/account/login/").send(login);
-		
+
 		return response.headers["set-cookie"];
 	}
 }

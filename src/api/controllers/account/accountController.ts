@@ -6,15 +6,14 @@ import {
 	request,
 	response,
 } from "inversify-express-utils";
-import { TYPES } from "../../../application/common/types";
-import BaseController from "../../common/baseController";
-import AuthServiceLocator from "../../../application/auth/authServiceLocator";
-import { LoginCommand } from "../../../application/auth/commands/loginCommand";
-import { RegisterCommand } from "../../../application/auth/commands/registerCommand";
-import AuthMiddleware from "../../../application/auth/provider/authMiddleware";
-import { LogoutCommand } from "../../../application/auth/commands/logoutCommand";
-import { LogoutAllCommand } from "../../../application/auth/commands/logoutAllCommand";
-import PassportMiddleware from "../../../application/auth/provider/passportMiddleware";
+import { TYPES } from "@src/application/common/types";
+import BaseController from "@src/api/common/baseController";
+import AuthServiceLocator from "@src/application/auth/authServiceLocator";
+import { LoginCommand } from "@src/application/auth/commands/loginCommand";
+import { RegisterCommand } from "@src/application/auth/commands/registerCommand";
+import AuthMiddleware from "@src/application/auth/provider/authMiddleware";
+import { LogoutCommand } from "@src/application/auth/commands/logoutCommand";
+import PassportMiddleware from "@src/application/auth/provider/passportMiddleware";
 
 @controller("/account")
 export default class AccountController extends BaseController {
@@ -56,18 +55,6 @@ export default class AccountController extends BaseController {
 		const result = await this._authServiceLocator
 			.logoutCommandHanlder()
 			.handle(logoutCommand);
-
-		return this.result(result);
-	}
-
-	@httpPost("/logoutall", AuthMiddleware)
-	public async logoutAll() {
-		const logoutAllCommand = LogoutAllCommand.create(
-			this.httpContext.user.details
-		);
-		const result = await this._authServiceLocator
-			.logoutAllCommandHanlder()
-			.handle(logoutAllCommand);
 
 		return this.result(result);
 	}

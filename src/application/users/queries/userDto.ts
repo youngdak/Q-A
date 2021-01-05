@@ -1,8 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
-import User from "../../../domain/users/user";
-import { Request } from "express";
-import Result from "../../../domain/common/result";
-import ActionResult from "../../../domain/common/actionresult";
+import User from "@src/domain/users/user";
+import Result from "@src/domain/common/result";
+import ActionResult from "@src/domain/common/actionresult";
 
 @ObjectType()
 export default class UserDto {

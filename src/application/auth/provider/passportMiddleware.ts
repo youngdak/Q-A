@@ -1,8 +1,8 @@
+import EnvironmentVariable from "@src/environmentVariable";
 import passport from "passport";
 import passportJwt from "passport-jwt";
-import UserId from "../../../domain/users/userId";
-import EnvironmentVariable from "../../../environmenVariable";
-import IUserRepository from "../../users/interfaces/userRepository";
+import UserId from "@src/domain/users/userId";
+import IUserRepository from "@src/application/users/interfaces/userRepository";
 
 const JwtStrategy = passportJwt.Strategy;
 const ExtractJwt = passportJwt.ExtractJwt;

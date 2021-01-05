@@ -1,7 +1,6 @@
-import Result from "../../domain/common/result";
+import Result from "@src/domain/common/result";
 import { injectable } from "inversify";
 import { BaseHttpController } from "inversify-express-utils";
-import { UserInputError } from "apollo-server-express";
 
 @injectable()
 export default abstract class BaseController extends BaseHttpController {

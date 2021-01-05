@@ -5,16 +5,21 @@
 	"main": "index.js",
 	"scripts": {
 		"typeorm": "set NODE_ENV=development && ts-node ./node_modules/typeorm/cli -f ./src/ormconfig.ts",
-		"dev": "NODE_ENV=development && ts-node-dev --respawn src/app.ts",
+		"build": "tsc",
+		"dev": "set NODE_ENV=development && ts-node src/app.ts",
 		"unit:test": "mocha --require ts-node/register ./test/unit.test/*.*",
-		"integration:test": "mocha --require ts-node/register ./test/integration.test/**/*.* --timeout 10000",
+		"integration:test": "set NODE_ENV=integration.test && mocha --require ts-node/register ./test/integration.test/**/*.* --timeout 10000",
 		"coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
 		"cover:unit": "nyc --silent npm run unit:test",
 		"cover:integration": "nyc --silent --no-clean npm run integration:test",
 		"cover:report": "nyc report --reporter=lcov --reporter=text",
-		"coverage": "npm run cover:unit && npm run cover:integration && npm run cover:report",
+		"coverage": "npm run build && npm run cover:unit && npm run cover:integration && npm run cover:report",
 		"type-coverage": "./node_modules/type-coverage/bin/type-coverage",
 		"ts-coverage": "typescript-coverage-report"
+	},
+	"_moduleAliases": {
+		"@src": "dist/src",
+		"@test": "dist/test"
 	},
 	"repository": {
 		"type": "git",
@@ -62,6 +67,7 @@
 		"jsonwebtoken": "^8.5.1",
 		"lodash": "^4.17.20",
 		"mocha": "^8.2.1",
+		"module-alias": "^2.2.2",
 		"mongodb": "^3.6.3",
 		"mongoose": "^5.10.13",
 		"passport": "^0.4.1",

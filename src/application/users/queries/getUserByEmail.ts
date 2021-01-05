@@ -1,12 +1,12 @@
-import Request from "../../interfaces/request";
-import RequestHandler from "../../interfaces/requesthandler";
+import Request from "@src/application/interfaces/request";
+import RequestHandler from "@src/application/interfaces/requesthandler";
 import { validate, IsEmail } from "class-validator";
-import IUserQuery from "../interfaces/userQuery";
+import IUserQuery from "@src/application/users/interfaces/userQuery";
 import { injectable, inject } from "inversify";
-import Result from "../../../domain/common/result";
-import ActionResult from "../../../domain/common/actionresult";
-import { TYPES } from "../../common/types";
-import UserDto from "./userDto";
+import Result from "@src/domain/common/result";
+import ActionResult from "@src/domain/common/actionresult";
+import { TYPES } from "@src/application/common/types";
+import UserDto from "@src/application/users/queries/userDto";
 
 export class GetUserByEmailQuery implements Request<Promise<Result<UserDto>>> {
 	@IsEmail()

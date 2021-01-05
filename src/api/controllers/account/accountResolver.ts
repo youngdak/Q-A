@@ -1,13 +1,13 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../application/common/types";
+import { TYPES } from "@src/application/common/types";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import BaseResolver from "../../common/BaseResolver";
-import AuthServiceLocator from "../../../application/auth/authServiceLocator";
-import { RegisterCommand } from "../../../application/auth/commands/registerCommand";
-import { LoginCommand } from "../../../application/auth/commands/loginCommand";
-import LoginDto from "../../../application/auth/commands/loginDto";
-import CustomContext from "../../../application/auth/provider/context";
-import PassportMiddleware from "../../../application/auth/provider/passportMiddleware";
+import BaseResolver from "@src/api/common/BaseResolver";
+import AuthServiceLocator from "@src/application/auth/authServiceLocator";
+import { RegisterCommand } from "@src/application/auth/commands/registerCommand";
+import { LoginCommand } from "@src/application/auth/commands/loginCommand";
+import LoginDto from "@src/application/auth/commands/loginDto";
+import CustomContext from "@src/application/auth/provider/context";
+import PassportMiddleware from "@src/application/auth/provider/passportMiddleware";
 
 @injectable()
 @Resolver()

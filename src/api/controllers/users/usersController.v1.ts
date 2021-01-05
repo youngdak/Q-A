@@ -6,14 +6,16 @@ import {
 	httpGet,
 	httpPatch,
 	interfaces,
+	httpPost,
 } from "inversify-express-utils";
-import { TYPES } from "../../../application/common/types";
-import UserServiceLocator from "../../../application/users/userServiceLocator";
-import BaseController from "../../common/baseController";
-import { GetUserByIdQuery } from "../../../application/users/queries/getUserById";
-import { UpdateUserCommand } from "../../../application/users/commands/updateUserCommand";
-import AuthMiddleware from "../../../application/auth/provider/authMiddleware";
-import UserDto from "../../../application/users/queries/userDto";
+import { TYPES } from "@src/application/common/types";
+import UserServiceLocator from "@src/application/users/userServiceLocator";
+import BaseController from "@src/api/common/baseController";
+import { GetUserByIdQuery } from "@src/application/users/queries/getUserById";
+import { UpdateUserCommand } from "@src/application/users/commands/updateUserCommand";
+import AuthMiddleware from "@src/application/auth/provider/authMiddleware";
+import UserDto from "@src/application/users/queries/userDto";
+import { AssignTagsToUserCommand } from "@src/application/users/commands/assignTagsToUserCommand";
 
 @controller("/users")
 export default class UsersController extends BaseController {
@@ -55,6 +57,18 @@ export default class UsersController extends BaseController {
 		const result = await this._userServiceLocator
 			.updateUserCommandHanlder()
 			.handle(updateUserCommand);
+
+		return this.result(result);
+	}
+
+	@httpPost("/tagUser", AuthMiddleware)
+	public async assignTagsToUser(
+		@request() req: Request
+	): Promise<interfaces.IHttpActionResult> {
+		const assignTagsToUserCommand = AssignTagsToUserCommand.create(req.body);
+		const result = await this._userServiceLocator
+			.assignTagsToUserCommandHanlder()
+			.handle(assignTagsToUserCommand);
 
 		return this.result(result);
 	}

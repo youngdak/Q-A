@@ -1,25 +1,31 @@
-import StringIdentity from "./stringIdentity";
+import StringIdentity from "@src/domain/entitybase/stringIdentity";
 
-export default abstract class EntityBase<TId extends StringIdentity> {
-    protected _id: TId | null;
-    protected constructor() {
-        this._id = null;
-    }
-
-    public get id(): TId | null {
-        return this._id;
-    }
+export interface IEntityBase {
+	createdDate: Date;
+	createdBy: string;
 }
 
+export default abstract class EntityBase<TId extends StringIdentity>
+	implements IEntityBase {
+	protected _id: TId | null;
+	protected _createdDate: Date;
+	protected _createdBy: string;
 
-// import LongIdentity from "./longIdentity";
-// export default abstract class EntityBase<TId extends LongIdentity> {
-//     protected _id: TId | null;
-//     constructor() {
-//         this._id = null;
-//     }
+	protected constructor(createdBy: string, createdDate?: Date) {
+		this._id = null;
+		this._createdDate = createdDate ?? new Date();
+		this._createdBy = createdBy;
+	}
 
-//     public get id(): TId | null {
-//         return this._id;
-//     }
-// }
+	public get id(): TId | null {
+		return this._id;
+	}
+
+	public get createdBy(): string {
+		return this._createdBy;
+	}
+
+	public get createdDate(): Date {
+		return this._createdDate;
+	}
+}

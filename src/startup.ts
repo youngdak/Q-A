@@ -4,24 +4,26 @@ import bodyParser from "body-parser";
 import { Container } from "inversify";
 import { InversifyExpressServer } from "inversify-express-utils";
 import { buildSchema } from "type-graphql";
-import UsersResolver from "./api/controllers/users/usersResolver.v1";
-import UserServiceLocator from "./application/users/userServiceLocator";
-import { TYPES } from "./application/common/types";
-import IDatabase from "./persistence/common/database";
-import PostgreSqlDatabaseSetup from "./persistence/sql/postgresqlDatabaseSetup";
-import MongoDatabaseSetup from "./persistence/nosql/mongo/mongoDatabaseSetup";
+import UsersResolver from "@src/api/controllers/users/usersResolver.v1";
+import UserServiceLocator from "@src/application/users/userServiceLocator";
+import IDatabase from "@src/persistence/common/database";
+import PostgreSqlDatabaseSetup from "@src/persistence/sql/postgresqlDatabaseSetup";
+import MongoDatabaseSetup from "@src/persistence/nosql/mongo/mongoDatabaseSetup";
 import { ConnectionOptions } from "typeorm";
-import SqlDatabaseSetup from "./persistence/sql/sqlDatabaseSetup";
+import SqlDatabaseSetup from "@src/persistence/sql/sqlDatabaseSetup";
 import express from "express";
-import EnvironmentVariable from "./environmenVariable";
-import { DatabaseType } from "./persistence/common/databaseType";
+import { DatabaseType } from "@src/persistence/common/databaseType";
 import http from "http";
-import AuthMiddleware from "./application/auth/provider/authMiddleware";
-import PassportMiddleware from "./application/auth/provider/passportMiddleware";
-import AuthServiceLocator from "./application/auth/authServiceLocator";
-import AccountResolver from "./api/controllers/account/accountResolver";
-import CustomContext from "./application/auth/provider/context";
+import AuthMiddleware from "@src/application/auth/provider/authMiddleware";
+import PassportMiddleware from "@src/application/auth/provider/passportMiddleware";
+import AuthServiceLocator from "@src/application/auth/authServiceLocator";
+import AccountResolver from "@src/api/controllers/account/accountResolver";
+import CustomContext from "@src/application/auth/provider/context";
 import cookieParser from "cookie-parser";
+import TagServiceLocator from "@src/application/tags/tagServiceLocator";
+import TagsResolver from "@src/api/controllers/tags/tagsResolver.v1";
+import EnvironmentVariable from "@src/environmentVariable";
+import { TYPES } from "@src/application/common/types";
 
 export default class Startup {
 	private readonly container: Container;
@@ -61,13 +63,18 @@ export default class Startup {
 
 	private async registerServices(): Promise<void> {
 		await require("./api/controllers/users/usersController.v1");
+		await require("./api/controllers/tags/tagsController.v1");
 		await require("./api/controllers/account/accountController");
 
 		this.container.bind<UsersResolver>(UsersResolver).toSelf();
+		this.container.bind<TagsResolver>(TagsResolver).toSelf();
 		this.container.bind<AccountResolver>(AccountResolver).toSelf();
 		this.container
 			.bind<UserServiceLocator>(TYPES.UserServiceLocator)
 			.to(UserServiceLocator);
+		this.container
+			.bind<TagServiceLocator>(TYPES.TagServiceLocator)
+			.to(TagServiceLocator);
 		this.container
 			.bind<AuthServiceLocator>(TYPES.AuthServiceLocator)
 			.to(AuthServiceLocator);
@@ -122,9 +129,8 @@ export default class Startup {
 
 	private async initializeApolloServer(): Promise<void> {
 		const schema = await buildSchema({
-			resolvers: ["./api/controllers/**/*.ts"], //[UsersResolver, AccountResolver],
+			resolvers: ["./api/controllers/**/*.ts"],
 			container: this.container,
-			// authChecker: this.container.get(PassportMiddleware).authChecker,
 		});
 
 		this.apolloServer = new ApolloServer({

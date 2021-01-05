@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
-import IUserQuery from "../../../../application/users/interfaces/userQuery";
-import UserDto from "../../../../application/users/queries/userDto";
-import UserId from "../../../../domain/users/userId";
-import { UserMap } from "./userDocument";
+import IUserQuery from "@src/application/users/interfaces/userQuery";
+import UserDto from "@src/application/users/queries/userDto";
+import UserId from "@src/domain/users/userId";
+import { UserMap } from "@src/persistence/nosql/mongo/users/userDocument";
 
 @injectable()
 export default class UserQuery implements IUserQuery {

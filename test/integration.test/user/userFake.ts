@@ -1,10 +1,10 @@
-import IUserRepository from "../../../src/application/users/interfaces/userRepository";
-import User from "../../../src/domain/users/user";
+import IUserRepository from "@src/application/users/interfaces/userRepository";
+import User from "@src/domain/users/user";
 import argon2 from "argon2";
 import { v4 as uuidv4 } from "uuid";
 import { Container } from "inversify";
-import { TYPES } from "../../../src/application/common/types";
-import IFake from "../configuration/fake";
+import IFake from "@test/integration.test/configuration/fake";
+import { TYPES } from "@src/application/common/types";
 
 export default class UserFake implements IFake<User> {
 	private readonly _userRepository: IUserRepository;
@@ -21,7 +21,8 @@ export default class UserFake implements IFake<User> {
 			"doe",
 			"milik",
 			`${unique}@test.com`,
-			hashedPassword
+			hashedPassword,
+			"admin"
 		);
 
 		const result = await this._userRepository.save(user.data);

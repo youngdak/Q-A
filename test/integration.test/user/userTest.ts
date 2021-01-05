@@ -1,9 +1,9 @@
 import request, { SuperTest } from "supertest";
 import { expect } from "chai";
-import TestServer from "../configuration/testServer";
-import User from "../../../src/domain/users/user";
-import UserDto from "../../../src/application/users/queries/userDto";
-import { RegisterCommand } from "../../../src/application/auth/commands/registerCommand";
+import TestServer from "@test/integration.test/configuration/testServer";
+import User from "@src/domain/users/user";
+import UserDto from "@src/application/users/queries/userDto";
+import { RegisterCommand } from "@src/application/auth/commands/registerCommand";
 
 var testServer = new TestServer();
 

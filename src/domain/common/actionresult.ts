@@ -1,4 +1,4 @@
-import Result from "./result";
+import Result from "@src/domain/common/result";
 
 export default class ActionResult {
     public static ok<T>(data: T): Result<T> {

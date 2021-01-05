@@ -25,6 +25,9 @@ coverage
 # type coverage directory for typescript
 coverage-ts
 
+# dist
+dist
+
 # nyc test coverage
 .nyc_output
 

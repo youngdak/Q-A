@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../../application/common/types";
-import UserServiceLocator from "../../../application/users/userServiceLocator";
-import { UpdateUserCommand } from "../../../application/users/commands/updateUserCommand";
+import { TYPES } from "@src/application/common/types";
+import UserServiceLocator from "@src/application/users/userServiceLocator";
+import { UpdateUserCommand } from "@src/application/users/commands/updateUserCommand";
 import {
 	Arg,
 	Ctx,
@@ -10,10 +10,12 @@ import {
 	Resolver,
 	UseMiddleware,
 } from "type-graphql";
-import UserDto from "../../../application/users/queries/userDto";
-import BaseResolver from "../../common/BaseResolver";
-import AuthMiddleware from "../../../application/auth/provider/authMiddleware";
-import CustomContext from "../../../application/auth/provider/context";
+import UserDto from "@src/application/users/queries/userDto";
+import BaseResolver from "@src/api/common/BaseResolver";
+import AuthMiddleware from "@src/application/auth/provider/authMiddleware";
+import CustomContext from "@src/application/auth/provider/context";
+import { AssignTagsToUserCommand } from "@src/application/users/commands/assignTagsToUserCommand";
+import AssignTagsToUserCommandDto from "@src/application/users/commands/assignTagsToUserCommandDto";
 
 @injectable()
 @Resolver()
@@ -50,6 +52,21 @@ export default class UsersResolver extends BaseResolver {
 	): Promise<string | number> {
 		const result = await this._userServiceLocator
 			.updateUserCommandHanlder()
+			.handle(input);
+
+		return this.result(result);
+	}
+
+	@UseMiddleware(AuthMiddleware)
+	@Mutation(() => AssignTagsToUserCommandDto, { name: "tagUser" })
+	public async tagUser(
+		@Arg("input") input: AssignTagsToUserCommand,
+		@Ctx() ctx: CustomContext
+	): Promise<AssignTagsToUserCommandDto> {
+		input.req = ctx.req;
+
+		const result = await this._userServiceLocator
+			.assignTagsToUserCommandHanlder()
 			.handle(input);
 
 		return this.result(result);

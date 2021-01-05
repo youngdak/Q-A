@@ -1,8 +1,6 @@
-import User, { IUser } from "../../../domain/users/user";
-import { Entity, Column, PrimaryColumn, OneToMany } from "typeorm";
-import UserId from "../../../domain/users/userId";
-import UserTokenMap from "./userToken.map";
-import UserTagMap from "./userTag.map";
+import User, { IUser } from "@src/domain/users/user";
+import { Entity, Column, PrimaryColumn } from "typeorm";
+import UserId from "@src/domain/users/userId";
 
 @Entity("User")
 export default class UserMap implements IUser {
@@ -24,15 +22,11 @@ export default class UserMap implements IUser {
 	@Column()
 	password: string;
 
-	@OneToMany(() => UserTokenMap, (tokenMap) => tokenMap.user, {
-		cascade: ["insert", "update"],
-	})
-	tokens: UserTokenMap[];
+	@Column()
+	createdBy: string;
 
-	@OneToMany(() => UserTagMap, (tagMap) => tagMap.user, {
-		cascade: ["insert", "update"],
-	})
-	tags: UserTagMap[];
+	@Column()
+	createdDate: Date;
 
 	public static userMap(user: User): UserMap {
 		const userMap = new UserMap();
@@ -42,8 +36,8 @@ export default class UserMap implements IUser {
 		userMap.otherName = user.otherName;
 		userMap.email = user.email;
 		userMap.password = user.password;
-		userMap.tokens = user.tokens.map((x) => UserTokenMap.userTokenMap(x));
-		userMap.tags = user.tags.map((x) => UserTagMap.userTagMap(x));
+		userMap.createdBy = user.createdBy;
+		userMap.createdDate = user.createdDate;
 
 		return userMap;
 	}
@@ -56,19 +50,11 @@ export default class UserMap implements IUser {
 			userMap.otherName,
 			userMap.email,
 			userMap.password,
+			userMap.createdBy,
+			userMap.createdDate,
 			userId
 		).data;
 
-		if (userMap.tokens) {
-			userMap.tokens.map((x) =>
-				user.addOrUpdateToken(UserTokenMap.userToken(x))
-			);
-		}
-
-		if (userMap.tags) {
-			var tags = userMap.tags.map((x) => UserTagMap.userTag(x));
-			user.manageTags(tags);
-		}
 		return user;
 	}
 }

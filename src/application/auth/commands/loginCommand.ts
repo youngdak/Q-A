@@ -1,18 +1,17 @@
-import Request from "../../interfaces/request";
-import RequestHandler from "../../interfaces/requesthandler";
+import Request from "@src/application/interfaces/request";
+import RequestHandler from "@src/application/interfaces/requesthandler";
 import { validate, IsNotEmpty, IsString, IsEmail } from "class-validator";
 import { injectable, inject } from "inversify";
-import Result from "../../../domain/common/result";
-import ActionResult from "../../../domain/common/actionresult";
-import { TYPES } from "../../common/types";
-import IUserRepository from "../../users/interfaces/userRepository";
+import Result from "@src/domain/common/result";
+import ActionResult from "@src/domain/common/actionresult";
+import IUserRepository from "@src/application/users/interfaces/userRepository";
 import jwt from "jsonwebtoken";
-import LoginDto from "./loginDto";
+import LoginDto from "@src/application/auth/commands/loginDto";
 import { v4 as uuidv4 } from "uuid";
 import argon2 from "argon2";
-import UserToken from "../../../domain/users/userToken";
 import { Field, InputType } from "type-graphql";
-import EnvironmentVariable from "../../../environmenVariable";
+import { TYPES } from "@src/application/common/types";
+import EnvironmentVariable from "@src/environmentVariable";
 
 @InputType()
 export class LoginCommand implements Request<Promise<Result<LoginDto>>> {
@@ -74,20 +73,6 @@ export class LoginCommandHandler
 
 		const token = jwt.sign(userDetail, EnvironmentVariable.SECRET_KEY);
 		const refreshToken = uuidv4();
-
-		const hashedToken = await argon2.hash(token);
-		const hashedRefreshToken = await argon2.hash(token);
-		const userTokenResult = UserToken.create(
-			hashedToken,
-			hashedRefreshToken,
-			request.device
-		);
-
-		if (userTokenResult.failure) {
-			return ActionResult.fail(userTokenResult.error);
-		}
-
-		userByEmail.addOrUpdateToken(userTokenResult.data);
 
 		const loginDto = new LoginDto();
 		loginDto.token = token;

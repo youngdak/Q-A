@@ -1,14 +1,14 @@
-import Request from "../../interfaces/request";
-import RequestHandler from "../../interfaces/requesthandler";
+import Request from "@src/application/interfaces/request";
+import RequestHandler from "@src/application/interfaces/requesthandler";
 import { validate, IsNotEmpty, IsString, IsEmail } from "class-validator";
-import User from "../../../domain/users/user";
+import User from "@src/domain/users/user";
 import { injectable, inject } from "inversify";
-import Result from "../../../domain/common/result";
-import ActionResult from "../../../domain/common/actionresult";
-import { TYPES } from "../../common/types";
+import Result from "@src/domain/common/result";
+import ActionResult from "@src/domain/common/actionresult";
 import argon2 from "argon2";
 import { Field, InputType } from "type-graphql";
-import IUserRepository from "../../users/interfaces/userRepository";
+import IUserRepository from "@src/application/users/interfaces/userRepository";
+import { TYPES } from "@src/application/common/types";
 
 @InputType()
 export class RegisterCommand
@@ -86,7 +86,8 @@ export class RegisterCommandHandler
 			request.lastName!,
 			request.otherName!,
 			request.email!,
-			hashedPassword
+			hashedPassword,
+			request.email
 		);
 
 		if (user.failure) {

@@ -1,23 +1,28 @@
-import IUserRepository from "./interfaces/userRepository";
+import IUserRepository from "@src/application/users/interfaces/userRepository";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../common/types";
-import { GetAllUsersQueryHandler } from "./queries/getAllUsers";
-import IUserQuery from "./interfaces/userQuery";
-import { GetUserByIdQueryHandler } from "./queries/getUserById";
-import { UpdateUserCommandHandler } from "./commands/updateUserCommand";
-import { DeleteUserCommandHandler } from "./commands/deleteUserCommand";
-import { GetUserByEmailQueryHandler } from "./queries/getUserByEmail";
+import { GetAllUsersQueryHandler } from "@src/application/users/queries/getAllUsers";
+import IUserQuery from "@src/application/users/interfaces/userQuery";
+import { GetUserByIdQueryHandler } from "@src/application/users/queries/getUserById";
+import { UpdateUserCommandHandler } from "@src/application/users/commands/updateUserCommand";
+import { DeleteUserCommandHandler } from "@src/application/users/commands/deleteUserCommand";
+import { GetUserByEmailQueryHandler } from "@src/application/users/queries/getUserByEmail";
+import { AssignTagsToUserCommandHandler } from "@src/application/users/commands/assignTagsToUserCommand";
+import ITagRepository from "@src/application/tags/interfaces/tagRepository";
+import { TYPES } from "@src/application/common/types";
 
 @injectable()
 export default class UserServiceLocator {
 	private readonly _userRepository: IUserRepository;
 	private readonly _userQuery: IUserQuery;
+	private readonly _tagRepository: ITagRepository;
 	constructor(
 		@inject(TYPES.IUserRepository) userRepository: IUserRepository,
-		@inject(TYPES.IUserQuery) userQuery: IUserQuery
+		@inject(TYPES.IUserQuery) userQuery: IUserQuery,
+		@inject(TYPES.ITagRepository) tagRepository: ITagRepository
 	) {
 		this._userRepository = userRepository;
 		this._userQuery = userQuery;
+		this._tagRepository = tagRepository;
 	}
 
 	public updateUserCommandHanlder(): UpdateUserCommandHandler {
@@ -26,6 +31,13 @@ export default class UserServiceLocator {
 
 	public deleteUserCommandHanlder(): DeleteUserCommandHandler {
 		return new DeleteUserCommandHandler(this._userRepository);
+	}
+
+	public assignTagsToUserCommandHanlder(): AssignTagsToUserCommandHandler {
+		return new AssignTagsToUserCommandHandler(
+			this._userRepository,
+			this._tagRepository
+		);
 	}
 
 	public getAllUsersQueryHanlder(): GetAllUsersQueryHandler {

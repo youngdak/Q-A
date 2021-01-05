@@ -1,7 +1,6 @@
 import { UserInputError } from "apollo-server-express";
 import { injectable } from "inversify";
-import { Resolver } from "type-graphql";
-import Result from "../../domain/common/result";
+import Result from "@src/domain/common/result";
 
 @injectable()
 export default class BaseResolver {

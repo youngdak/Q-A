@@ -3,7 +3,7 @@ import { injectable } from "inversify";
 import { BaseMiddleware } from "inversify-express-utils";
 import passport from "passport";
 import { MiddlewareInterface, NextFn, ResolverData } from "type-graphql";
-import CustomContext from "./context";
+import CustomContext from "@src/application/auth/provider/context";
 
 @injectable()
 export default class AuthMiddleware
