@@ -3,6 +3,7 @@ import UserTagId from "@src/domain/users/userTagId";
 import { v4 as uuidv4 } from "uuid";
 import Result from "@src/domain/common/result";
 import ActionResult from "@src/domain/common/actionresult";
+import Guard, { GuardMessage } from "@src/domain/common/guard";
 
 export interface IUserTag extends IEntityBase {
 	userId: string;
@@ -34,16 +35,6 @@ export default class UserTag extends EntityBase<UserTagId> implements IUserTag {
 		return this._tag;
 	}
 
-	// public update(name: string): Result<void> {
-	// 	if (name == undefined || name == null || name.length <= 0) {
-	// 		return ActionResult.fail("name should not be null or empty");
-	// 	}
-
-	// 	this._name = name;
-
-	// 	return ActionResult.ok(undefined);
-	// }
-
 	public static create(
 		user: string,
 		tag: string,
@@ -63,15 +54,29 @@ export default class UserTag extends EntityBase<UserTagId> implements IUserTag {
 		createdDate?: Date,
 		tagId?: UserTagId
 	): Result<UserTag> {
-		if (createdBy == undefined || createdBy == null || createdBy.length <= 0) {
-			return ActionResult.fail("created by should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(user)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("user id")
+			);
+		}
+
+		if (Guard.isNotNullEmptyOrWhitespace(tag)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("tag id")
+			);
+		}
+
+		if (Guard.isNotNullEmptyOrWhitespace(createdBy)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("createdby")
+			);
 		}
 
 		const id = tagId ?? UserTagId.create(uuidv4());
 		var userTag = createdDate
 			? new UserTag(id, user, tag, createdBy, createdDate)
 			: new UserTag(id, user, tag, createdBy);
-			
+
 		return ActionResult.ok(userTag);
 	}
 }

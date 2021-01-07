@@ -15,7 +15,7 @@ export default class UserDto {
 	public lastName: string;
 
 	@Field()
-	public otherName: string;
+	public otherName?: string;
 
 	@Field()
 	public email: string;

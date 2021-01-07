@@ -14,7 +14,7 @@ export default class UserMap implements IUser {
 	lastName: string;
 
 	@Column({ nullable: true })
-	otherName: string;
+	otherName?: string;
 
 	@Column({ unique: true })
 	email: string;

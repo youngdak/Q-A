@@ -3,11 +3,12 @@ import UserId from "@src/domain/users/userId";
 import { v4 as uuidv4 } from "uuid";
 import Result from "@src/domain/common/result";
 import ActionResult from "@src/domain/common/actionresult";
+import Guard, { GuardMessage } from "@src/domain/common/guard";
 
 export interface IUser extends IEntityBase {
 	firstName: string;
 	lastName: string;
-	otherName: string;
+	otherName?: string;
 	email: string;
 	password: string;
 }
@@ -16,7 +17,7 @@ export default class User extends EntityBase<UserId> implements IUser {
 	public static readonly EntityName = "User";
 	private _firstName: string;
 	private _lastName: string;
-	private _otherName: string;
+	private _otherName?: string;
 	private _email: string;
 	private _password: string;
 
@@ -24,7 +25,7 @@ export default class User extends EntityBase<UserId> implements IUser {
 		userId: UserId,
 		firstName: string,
 		lastName: string,
-		otherName: string,
+		otherName: string | undefined,
 		email: string,
 		password: string,
 		createdBy: string,
@@ -48,7 +49,7 @@ export default class User extends EntityBase<UserId> implements IUser {
 		return this._lastName;
 	}
 
-	public get otherName(): string {
+	public get otherName(): string | undefined {
 		return this._otherName;
 	}
 
@@ -63,14 +64,18 @@ export default class User extends EntityBase<UserId> implements IUser {
 	public update(
 		firstName: string,
 		lastName: string,
-		otherName: string
+		otherName?: string
 	): Result<void> {
-		if (firstName == undefined || firstName == null || firstName.length <= 0) {
-			return ActionResult.fail("first name should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(firstName)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("first name")
+			);
 		}
 
-		if (lastName == undefined || lastName == null || lastName.length <= 0) {
-			return ActionResult.fail("last name should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(lastName)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("last name")
+			);
 		}
 
 		this._firstName = firstName;
@@ -83,7 +88,7 @@ export default class User extends EntityBase<UserId> implements IUser {
 	public static create(
 		firstName: string,
 		lastName: string,
-		otherName: string,
+		otherName: string | undefined,
 		email: string,
 		password: string,
 		createdBy: string
@@ -91,7 +96,7 @@ export default class User extends EntityBase<UserId> implements IUser {
 	public static create(
 		firstName: string,
 		lastName: string,
-		otherName: string,
+		otherName: string | undefined,
 		email: string,
 		password: string,
 		createdBy: string,
@@ -101,31 +106,39 @@ export default class User extends EntityBase<UserId> implements IUser {
 	public static create(
 		firstName: string,
 		lastName: string,
-		otherName: string,
+		otherName: string | undefined,
 		email: string,
 		password: string,
 		createdBy: string,
 		createdDate?: Date,
 		userId?: UserId
 	): Result<User> {
-		if (firstName == undefined || firstName == null || firstName.length <= 0) {
-			return ActionResult.fail("first name should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(firstName)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("first name")
+			);
 		}
 
-		if (lastName == undefined || lastName == null || lastName.length <= 0) {
-			return ActionResult.fail("last name should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(lastName)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("last name")
+			);
 		}
 
-		if (email == undefined || email == null || email.length <= 0) {
-			return ActionResult.fail("email should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(email)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("email")
+			);
 		}
 
-		if (password == undefined || password == null || password.length <= 0) {
-			return ActionResult.fail("password should not be null or empty");
+		if (Guard.isNotNullOrEmpty(password)) {
+			return ActionResult.fail(GuardMessage.isNotNullOrEmpty("password"));
 		}
 
-		if (createdBy == undefined || createdBy == null || createdBy.length <= 0) {
-			return ActionResult.fail("created by should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(createdBy)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("createdby")
+			);
 		}
 
 		const id = userId ?? UserId.create(uuidv4());

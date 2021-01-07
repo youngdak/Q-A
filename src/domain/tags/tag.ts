@@ -3,6 +3,7 @@ import TagId from "@src/domain/tags/tagId";
 import { v4 as uuidv4 } from "uuid";
 import Result from "@src/domain/common/result";
 import ActionResult from "@src/domain/common/actionresult";
+import Guard, { GuardMessage } from "@src/domain/common/guard";
 
 export interface ITag extends IEntityBase {
 	name: string;
@@ -35,16 +36,14 @@ export default class Tag extends EntityBase<TagId> implements ITag {
 	}
 
 	public update(name: string, description: string): Result<void> {
-		if (name == undefined || name == null || name.length <= 0) {
-			return ActionResult.fail("name should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(name)) {
+			return ActionResult.fail(GuardMessage.isNotNullEmptyOrWhitespace("name"));
 		}
 
-		if (
-			description == undefined ||
-			description == null ||
-			description.length <= 0
-		) {
-			return ActionResult.fail("description should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(description)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("description")
+			);
 		}
 
 		this._name = name;
@@ -72,20 +71,20 @@ export default class Tag extends EntityBase<TagId> implements ITag {
 		createdDate?: Date,
 		tagId?: TagId
 	): Result<Tag> {
-		if (name == undefined || name == null || name.length <= 0) {
-			return ActionResult.fail("name should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(name)) {
+			return ActionResult.fail(GuardMessage.isNotNullEmptyOrWhitespace("name"));
 		}
 
-		if (
-			description == undefined ||
-			description == null ||
-			description.length <= 0
-		) {
-			return ActionResult.fail("description should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(description)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("description")
+			);
 		}
 
-		if (createdBy == undefined || createdBy == null || createdBy.length <= 0) {
-			return ActionResult.fail("created by should not be null or empty");
+		if (Guard.isNotNullEmptyOrWhitespace(createdBy)) {
+			return ActionResult.fail(
+				GuardMessage.isNotNullEmptyOrWhitespace("createdby")
+			);
 		}
 
 		const id = tagId ?? TagId.create(uuidv4());

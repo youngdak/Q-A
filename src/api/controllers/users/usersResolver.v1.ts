@@ -36,7 +36,7 @@ export default class UsersResolver extends BaseResolver {
 	}
 
 	@UseMiddleware(AuthMiddleware)
-	@Query(() => UserDto, { name: "getById" })
+	@Query(() => UserDto, { name: "getUserById" })
 	public async getById(@Arg("id") id: string): Promise<UserDto> {
 		const result = await this._userServiceLocator
 			.getUserByIdQueryHanlder()
@@ -46,7 +46,7 @@ export default class UsersResolver extends BaseResolver {
 	}
 
 	@UseMiddleware(AuthMiddleware)
-	@Mutation(() => String, { name: "update" })
+	@Mutation(() => String, { name: "updateUser" })
 	public async update(
 		@Arg("input") input: UpdateUserCommand
 	): Promise<string | number> {
