@@ -6,7 +6,7 @@
 	"scripts": {
 		"typeorm:win": "set NODE_ENV=development && ts-node ./node_modules/typeorm/cli -f ./src/ormconfig.ts",
 		"typeorm:linux": "NODE_ENV=development ts-node ./node_modules/typeorm/cli -f ./src/ormconfig.ts",
-		"build": "tsc -w",
+		"build": "tsc",
 		"dev:win": "set NODE_ENV=development && ts-node src/app.ts",
 		"dev:linux": "NODE_ENV=development ts-node src/app.ts",
 		"unit:test": "mocha --require ts-node/register ./test/unit.test/*.*",
@@ -14,7 +14,7 @@
 		"integration:test:linux": "mocha --require ts-node/register ./test/integration.test/**/*.* --timeout 10000",
 		"coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
 		"cover:unit": "nyc --silent npm run unit:test",
-		"cover:integration": "nyc --silent --no-clean npm run integration:test",
+		"cover:integration": "nyc --silent --no-clean npm run integration:test:linux",
 		"cover:report": "nyc report --reporter=lcov --reporter=text",
 		"coverage": "npm run build && npm run cover:unit && npm run cover:integration && npm run cover:report",
 		"type-coverage": "./node_modules/type-coverage/bin/type-coverage",
