@@ -57,18 +57,18 @@ export class LoginCommandHandler
 			return ActionResult.fail(validationResult.map((x) => x.constraints));
 		}
 
-		const userByEmail = await this._userrepository.getByEmail(request.email);
-		if (!userByEmail) {
+		const login = await this._userrepository.login(request.email);
+		if (!login) {
 			return ActionResult.fail(`Invalid credentials!`);
 		}
 
-		const match = await argon2.verify(userByEmail.password, request.password);
+		const match = await argon2.verify(login[1], request.password);
 		if (!match) {
 			return ActionResult.fail(`Invalid credentials!`);
 		}
 
 		const userDetail = {
-			id: userByEmail.id?.Id,
+			id: login[0],
 		};
 
 		const token = jwt.sign(userDetail, EnvironmentVariable.SECRET_KEY);
@@ -78,7 +78,7 @@ export class LoginCommandHandler
 		loginDto.token = token;
 		loginDto.refreshToken = refreshToken;
 
-		await this._userrepository.update(userByEmail);
+		// await this._userrepository.update(userByEmail);
 
 		return ActionResult.ok(loginDto);
 	}

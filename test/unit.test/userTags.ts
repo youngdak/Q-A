@@ -6,7 +6,7 @@ import User from "@src/domain/users/user";
 import UserTag from "@src/domain/users/userTag";
 const should = chai.should();
 
-describe("tag domain", () => {
+describe("usertag domain", () => {
 	it("should create usertag successfully", () => {
 		const user = User.create(
 			"Diepreye",

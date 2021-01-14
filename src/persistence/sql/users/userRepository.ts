@@ -16,6 +16,11 @@ export default class UserRepository implements IUserRepository {
 		this.manager = manager;
 	}
 
+	public async login(email: string): Promise<[id: string, password: string] | undefined> {
+		const userMap = await this.manager.findOne(UserMap, { select: ["id", "password"], where: { email: email } });
+		return userMap != undefined ? [userMap.id, userMap.password] : undefined;
+	}
+
 	public async userExistById(id: UserId): Promise<boolean> {
 		const userId = await this.manager
 			.createQueryBuilder(UserMap, "user")

@@ -17,6 +17,11 @@ export default class UserRepository implements IUserRepository {
 		this.userTagMap = userTagMap;
 	}
 
+	public async login(email: string): Promise<[id: string, password: string] | undefined> {
+		const userMap = await this.userMap.model.findOne({ email: email }, "id, password");
+		return userMap != undefined ? [userMap.id, userMap.password] : undefined;
+	}
+
 	public async userExistById(id: UserId): Promise<boolean> {
 		const userById = await this.userMap.model.findOne({ _id: id.Id });
 		return new Promise<boolean>((resolve, _) => {

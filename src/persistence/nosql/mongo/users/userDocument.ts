@@ -25,7 +25,7 @@ export class UserMap implements BaseMap<UserDocument> {
 		},
 		otherName: {
 			type: String,
-			required: true,
+			required: false,
 			trim: true,
 		},
 		email: {

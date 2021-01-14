@@ -4,6 +4,7 @@ import UserTag from "@src/domain/users/userTag";
 import UserTagId from "@src/domain/users/userTagId";
 
 export default interface IUserRepository {
+	login(email: string): Promise<[id: string, password: string] | undefined>;
 	userExistById(id: UserId): Promise<boolean>;
 	userExistByEmail(email: string): Promise<boolean>;
 	userTags(userId: UserId): Promise<UserTag[]>;
