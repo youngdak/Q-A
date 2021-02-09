@@ -21,12 +21,12 @@ export default class PostgreSqlDatabaseSetup extends SqlDatabaseSetup {
 			cli: {
 				migrationsDir: this.MIGRATIONSDIR,
 			},
-			"ssl": EnvironmentVariable.NODE_ENV == "production",
-			"extra": {
+			"ssl": EnvironmentVariable.NODE_ENV === "production",
+			"extra": EnvironmentVariable.NODE_ENV === "production" ? {
 				"ssl": {
 					"rejectUnauthorized": false
 				}
-			}
+			} : undefined
 		};
 
 		return config;
