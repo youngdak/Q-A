@@ -53,7 +53,7 @@ export class TagMap implements BaseMap<TagDocument> {
 	}
 
 	public static tag(tagDocument: TagDocument): Tag {
-		var tagId = TagId.create(tagDocument.id);
+		var tagId = TagId.create(tagDocument._id);
 		const tag = Tag.create(
 			tagDocument.name,
 			tagDocument.description,

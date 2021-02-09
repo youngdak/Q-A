@@ -36,6 +36,8 @@ export default class MongoDatabaseSetup implements IDatabase {
 	private register(container: Container): void {
 		const userMap = new UserMap();
 		const userTagMap = new UserTagMap();
+		var tagMap = new TagMap();
+
 		container
 			.bind<IUserRepository>(TYPES.IUserRepository)
 			.toDynamicValue(() => {
@@ -45,11 +47,9 @@ export default class MongoDatabaseSetup implements IDatabase {
 		container
 			.bind<IUserQuery>(TYPES.IUserQuery)
 			.toDynamicValue(() => {
-				return new UserQuery(userMap);
+				return new UserQuery(userMap, tagMap);
 			})
 			.inRequestScope();
-
-		var tagMap = new TagMap();
 		container
 			.bind<ITagRepository>(TYPES.ITagRepository)
 			.toDynamicValue(() => {
@@ -59,7 +59,7 @@ export default class MongoDatabaseSetup implements IDatabase {
 		container
 			.bind<ITagQuery>(TYPES.ITagQuery)
 			.toDynamicValue(() => {
-				return new TagQuery(tagMap);
+				return new TagQuery(tagMap, userMap);
 			})
 			.inRequestScope();
 	}

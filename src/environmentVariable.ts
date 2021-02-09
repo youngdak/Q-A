@@ -1,5 +1,8 @@
 import * as dotenv from "dotenv";
-dotenv.config({ path: `.${process.env.NODE_ENV!.trim()}.env` });
+
+if (process.env.NODE_ENV !== "" && process.env.NODE_ENV !== undefined) {
+	dotenv.config({ path: `.${process.env.NODE_ENV!.trim()}.env` });
+}
 
 export default class EnvironmentVariable {
 	public static readonly DATABASE_TYPE = process.env.DATABASE_TYPE;

@@ -8,6 +8,7 @@ import { UpdateTagCommandHandler } from "@src/application/tags/commands/updateTa
 import { DeleteTagCommandHandler } from "@src/application/tags/commands/deleteTagCommand";
 import { GetTagByNameQueryHandler } from "@src/application/tags/queries/getTagByName";
 import { CreateTagCommandHandler } from "@src/application/tags/commands/createTagCommand";
+import { GetUserTagsQueryHandler } from "@src/application/tags/queries/getUserTags";
 
 @injectable()
 export default class TagServiceLocator {
@@ -43,5 +44,9 @@ export default class TagServiceLocator {
 
 	public getTagByNameQueryHanlder(): GetTagByNameQueryHandler {
 		return new GetTagByNameQueryHandler(this._tagQuery);
+	}
+
+	public getUserTagQueryHanlder(): GetUserTagsQueryHandler {
+		return new GetUserTagsQueryHandler(this._tagQuery);
 	}
 }

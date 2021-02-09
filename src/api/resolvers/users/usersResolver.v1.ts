@@ -5,9 +5,12 @@ import { UpdateUserCommand } from "@src/application/users/commands/updateUserCom
 import {
 	Arg,
 	Ctx,
+	FieldResolver,
 	Mutation,
 	Query,
 	Resolver,
+	ResolverInterface,
+	Root,
 	UseMiddleware,
 } from "type-graphql";
 import UserDto from "@src/application/users/queries/userDto";
@@ -16,16 +19,22 @@ import AuthMiddleware from "@src/application/auth/provider/authMiddleware";
 import CustomContext from "@src/application/auth/provider/context";
 import { AssignTagsToUserCommand } from "@src/application/users/commands/assignTagsToUserCommand";
 import AssignTagsToUserCommandDto from "@src/application/users/commands/assignTagsToUserCommandDto";
+import TagServiceLocator from "@src/application/tags/tagServiceLocator";
+import TagDto from "@src/application/tags/queries/tagDto";
+import { GetUserTagsQuery } from "@src/application/tags/queries/getUserTags";
 
 @injectable()
-@Resolver()
-export default class UsersResolver extends BaseResolver {
+@Resolver(() => UserDto)
+export default class UsersResolver extends BaseResolver implements ResolverInterface<UserDto> {
 	private readonly _userServiceLocator: UserServiceLocator;
+	private readonly _tagServiceLocator: TagServiceLocator;
 	constructor(
-		@inject(TYPES.UserServiceLocator) userServiceLocator: UserServiceLocator
+		@inject(TYPES.UserServiceLocator) userServiceLocator: UserServiceLocator,
+		@inject(TYPES.TagServiceLocator) tagServiceLocator: TagServiceLocator
 	) {
 		super();
 		this._userServiceLocator = userServiceLocator;
+		this._tagServiceLocator = tagServiceLocator;
 	}
 
 	@UseMiddleware(AuthMiddleware)
@@ -68,6 +77,14 @@ export default class UsersResolver extends BaseResolver {
 		const result = await this._userServiceLocator
 			.assignTagsToUserCommandHanlder()
 			.handle(input);
+
+		return this.result(result);
+	}
+
+	@FieldResolver()
+	public async tags(@Root() user: UserDto): Promise<TagDto[]> {
+		const input = GetUserTagsQuery.create({ id: user.id! });
+		const result = await this._tagServiceLocator.getUserTagQueryHanlder().handle(input);
 
 		return this.result(result);
 	}

@@ -9,6 +9,7 @@ import { GetUserByEmailQueryHandler } from "@src/application/users/queries/getUs
 import { AssignTagsToUserCommandHandler } from "@src/application/users/commands/assignTagsToUserCommand";
 import ITagRepository from "@src/application/tags/interfaces/tagRepository";
 import { TYPES } from "@src/application/common/types";
+import { GetUsersOfTagQueryHandler } from "./queries/getUsersOfTag";
 
 @injectable()
 export default class UserServiceLocator {
@@ -50,5 +51,9 @@ export default class UserServiceLocator {
 
 	public getUserByEmailQueryHanlder(): GetUserByEmailQueryHandler {
 		return new GetUserByEmailQueryHandler(this._userQuery);
+	}
+
+	public getUsersOfTagQueryHanlder(): GetUsersOfTagQueryHandler {
+		return new GetUsersOfTagQueryHandler(this._userQuery);
 	}
 }

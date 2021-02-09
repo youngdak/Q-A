@@ -4,6 +4,7 @@ import IUserQuery from "@src/application/users/interfaces/userQuery";
 import UserId from "@src/domain/users/userId";
 import { injectable } from "inversify";
 import UserDto from "@src/application/users/queries/userDto";
+import tagId from "@src/domain/tags/tagId";
 
 @EntityRepository()
 @injectable()
@@ -11,6 +12,17 @@ export default class UserQuery implements IUserQuery {
 	private readonly manager: EntityManager;
 	constructor(manager: EntityManager) {
 		this.manager = manager;
+	}
+
+	public async getUsersOfTag(id: tagId): Promise<UserDto[]> {
+		const userMaps = await this.manager.createQueryBuilder(UserMap, "user")
+			.innerJoin("UserTag", "ut", "ut.userId = user.Id")
+			.innerJoin("Tag", "t", "t.Id = ut.tagId")
+			.where("t.id = :id", { id: id.Id })
+			.getMany();
+
+		const users = userMaps.map((userMap) => UserDto.userDto(UserMap.user(userMap)));
+		return users;
 	}
 
 	public async getAll(): Promise<UserDto[]> {

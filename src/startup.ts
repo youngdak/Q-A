@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import { Container } from "inversify";
 import { InversifyExpressServer } from "inversify-express-utils";
 import { buildSchema } from "type-graphql";
-import UsersResolver from "@src/api/controllers/users/usersResolver.v1";
+import UsersResolver from "@src/api/resolvers/users/usersResolver.v1";
 import UserServiceLocator from "@src/application/users/userServiceLocator";
 import IDatabase from "@src/persistence/common/database";
 import PostgreSqlDatabaseSetup from "@src/persistence/sql/postgresqlDatabaseSetup";
@@ -17,11 +17,11 @@ import http from "http";
 import AuthMiddleware from "@src/application/auth/provider/authMiddleware";
 import PassportMiddleware from "@src/application/auth/provider/passportMiddleware";
 import AuthServiceLocator from "@src/application/auth/authServiceLocator";
-import AccountResolver from "@src/api/controllers/account/accountResolver";
+import AccountResolver from "@src/api/resolvers/accountResolver";
 import CustomContext from "@src/application/auth/provider/context";
 import cookieParser from "cookie-parser";
 import TagServiceLocator from "@src/application/tags/tagServiceLocator";
-import TagsResolver from "@src/api/controllers/tags/tagsResolver.v1";
+import TagsResolver from "@src/api/resolvers/tags/tagsResolver.v1";
 import EnvironmentVariable from "@src/environmentVariable";
 import { TYPES } from "@src/application/common/types";
 
@@ -64,7 +64,7 @@ export default class Startup {
 	private async registerServices(): Promise<void> {
 		await require("./api/controllers/users/usersController.v1");
 		await require("./api/controllers/tags/tagsController.v1");
-		await require("./api/controllers/account/accountController");
+		await require("./api/controllers/accountController");
 
 		this.container.bind<UsersResolver>(UsersResolver).toSelf();
 		this.container.bind<TagsResolver>(TagsResolver).toSelf();
@@ -129,7 +129,7 @@ export default class Startup {
 
 	private async initializeApolloServer(): Promise<void> {
 		const schema = await buildSchema({
-			resolvers: ["./api/controllers/**/*.ts"],
+			resolvers: ["./api/resolvers/**/*.ts"],
 			container: this.container,
 		});
 

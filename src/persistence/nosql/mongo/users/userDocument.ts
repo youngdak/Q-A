@@ -70,7 +70,7 @@ export class UserMap implements BaseMap<UserDocument> {
 	}
 
 	public static user(userDocument: UserDocument): User {
-		var userId = UserId.create(userDocument.id);
+		var userId = UserId.create(userDocument._id);
 		const user = User.create(
 			userDocument.firstName,
 			userDocument.lastName,

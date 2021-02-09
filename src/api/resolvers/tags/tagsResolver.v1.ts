@@ -5,9 +5,12 @@ import { UpdateTagCommand } from "@src/application/tags/commands/updateTagComman
 import {
 	Arg,
 	Ctx,
+	FieldResolver,
 	Mutation,
 	Query,
 	Resolver,
+	ResolverInterface,
+	Root,
 	UseMiddleware,
 } from "type-graphql";
 import TagDto from "@src/application/tags/queries/tagDto";
@@ -16,16 +19,22 @@ import AuthMiddleware from "@src/application/auth/provider/authMiddleware";
 import CustomContext from "@src/application/auth/provider/context";
 import { DeleteTagCommand } from "@src/application/tags/commands/deleteTagCommand";
 import { CreateTagCommand } from "@src/application/tags/commands/createTagCommand";
+import UserDto from "@src/application/users/queries/userDto";
+import { GetUsersOfTagQuery } from "@src/application/users/queries/getUsersOfTag";
+import UserServiceLocator from "@src/application/users/userServiceLocator";
 
 @injectable()
-@Resolver()
-export default class TagsResolver extends BaseResolver {
+@Resolver(of => TagDto)
+export default class TagsResolver extends BaseResolver implements ResolverInterface<TagDto> {
 	private readonly _tagServiceLocator: TagServiceLocator;
+	private readonly _userServiceLocator: UserServiceLocator;
 	constructor(
-		@inject(TYPES.TagServiceLocator) tagServiceLocator: TagServiceLocator
+		@inject(TYPES.TagServiceLocator) tagServiceLocator: TagServiceLocator,
+		@inject(TYPES.UserServiceLocator) userServiceLocator: UserServiceLocator
 	) {
 		super();
 		this._tagServiceLocator = tagServiceLocator;
+		this._userServiceLocator = userServiceLocator;
 	}
 
 	@UseMiddleware(AuthMiddleware)
@@ -80,6 +89,14 @@ export default class TagsResolver extends BaseResolver {
 		const result = await this._tagServiceLocator
 			.deleteTagCommandHanlder()
 			.handle(input);
+
+		return this.result(result);
+	}
+
+	@FieldResolver()
+	public async users(@Root() tag: TagDto): Promise<UserDto[]> {
+		const input = GetUsersOfTagQuery.create({ id: tag.id! });
+		const result = await this._userServiceLocator.getUsersOfTagQueryHanlder().handle(input);
 
 		return this.result(result);
 	}

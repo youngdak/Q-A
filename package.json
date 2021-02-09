@@ -4,6 +4,9 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"start": "node dist/src/app.js",
+		"postinstall": "tsc",
+		"deploy": "git add . && git commit -m Heroku && git push heroku master",
 		"typeorm:win": "set NODE_ENV=development && ts-node ./node_modules/typeorm/cli -f ./src/ormconfig.ts",
 		"typeorm:linux": "NODE_ENV=development ts-node ./node_modules/typeorm/cli -f ./src/ormconfig.ts",
 		"build": "tsc",
@@ -96,5 +99,8 @@
 	},
 	"typeCoverage": {
 		"atLeast": 98
+	},
+	"engines": {
+		"node": "14.15.0"
 	}
 }

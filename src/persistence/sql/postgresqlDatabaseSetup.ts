@@ -21,6 +21,12 @@ export default class PostgreSqlDatabaseSetup extends SqlDatabaseSetup {
 			cli: {
 				migrationsDir: this.MIGRATIONSDIR,
 			},
+			"ssl": true,
+			"extra": {
+			  "ssl": {
+				"rejectUnauthorized": false
+			  }
+			}
 		};
 
 		return config;
