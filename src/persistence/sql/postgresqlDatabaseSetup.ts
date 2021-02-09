@@ -21,7 +21,7 @@ export default class PostgreSqlDatabaseSetup extends SqlDatabaseSetup {
 			cli: {
 				migrationsDir: this.MIGRATIONSDIR,
 			},
-			"ssl": EnvironmentVariable.NODE_ENV === "production",
+			"ssl": EnvironmentVariable.NODE_ENV == "production",
 			"extra": {
 				"ssl": {
 					"rejectUnauthorized": false
