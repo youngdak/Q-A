@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== "" && process.env.NODE_ENV !== undefined) {
 }
 
 export default class EnvironmentVariable {
+	public static readonly NODE_ENV = process.env.NODE_ENV;
 	public static readonly DATABASE_TYPE = process.env.DATABASE_TYPE;
 	public static readonly DATABASE_NAME = process.env.DATABASE_NAME;
 	public static readonly DATABASE_HOST = process.env.DATABASE_HOST;

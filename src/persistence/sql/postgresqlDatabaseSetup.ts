@@ -9,7 +9,7 @@ export default class PostgreSqlDatabaseSetup extends SqlDatabaseSetup {
 	}
 
 	public configuration(): ConnectionOptions {
-		const config: ConnectionOptions = {
+		let config: ConnectionOptions = {
 			type: "postgres",
 			host: EnvironmentVariable.DATABASE_HOST,
 			port: Number(EnvironmentVariable.DATABASE_PORT),
@@ -21,11 +21,11 @@ export default class PostgreSqlDatabaseSetup extends SqlDatabaseSetup {
 			cli: {
 				migrationsDir: this.MIGRATIONSDIR,
 			},
-			"ssl": true,
+			"ssl": EnvironmentVariable.NODE_ENV === "production",
 			"extra": {
-			  "ssl": {
-				"rejectUnauthorized": false
-			  }
+				"ssl": {
+					"rejectUnauthorized": false
+				}
 			}
 		};
 
